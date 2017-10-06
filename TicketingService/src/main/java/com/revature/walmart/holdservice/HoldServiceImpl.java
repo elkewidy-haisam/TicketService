@@ -47,18 +47,26 @@ public class HoldServiceImpl implements HoldService{
 	public void addSeatHold(SeatHold seatHold) {
 		// TODO Auto-generated method stub
 		
-	}
-
-	@Override
-	public void updateSeatHold(SeatHold seatHold) {
-		// TODO Auto-generated method stub
+		seatsOnHold.add(seatHold);
 		
 	}
 
 	@Override
-	public int numSeatsAvailable() {
+	public void updateSeatHoldNumbers(SeatHold seatHold) {
 		// TODO Auto-generated method stub
-		return 0;
+		
+		String customerEmail = seatHold.getCustomerEmail();
+		
+		for (int j = 0; j < seatsOnHold.size(); j++) {
+			
+			if (seatsOnHold.get(j).getCustomerEmail().equals(customerEmail)) {
+				
+				seatsOnHold.get(j).setCustomerEmail(customerEmail);
+				seatsOnHold.get(j).setNumSeats(seatHold.getNumSeats());
+				
+			}
+			
+		}
 	}
 	
 

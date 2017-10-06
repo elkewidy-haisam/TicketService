@@ -11,6 +11,6 @@ public interface HoldService{
 	
 	public void addSeatHold(SeatHold seatHold);
 	
-	public void updateSeatHold(SeatHold seatHold);
+	public void updateSeatHoldNumbers(SeatHold seatHold);
 
 }
