@@ -88,12 +88,13 @@ public class Venue {
 		
 	}
 	
-	public Venue(int numSeats, String venueName, int temporarySeats) {
+	public Venue(int numSeats, String venueName, int temporarySeats, ArrayList<SeatHold> seatsOnHold) {
 		super();
 		this.numSeats = numSeats;
 		this.venueName = venueName;
 		this.temporarySeats = temporarySeats;
 		this.availableSeats = numSeats - temporarySeats;
+		this.seatsOnHold = seatsOnHold;
 		
 	}
 	

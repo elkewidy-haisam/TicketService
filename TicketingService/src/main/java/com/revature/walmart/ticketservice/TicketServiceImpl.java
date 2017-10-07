@@ -1,5 +1,7 @@
 package com.revature.walmart.ticketservice;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import com.revature.walmart.beans.SeatHold;
@@ -19,14 +21,23 @@ import com.revature.walmart.beans.Venue;
 @Repository("ticketserviceimpl")
 public class TicketServiceImpl implements TicketService{
 
+	@Autowired
+	@Qualifier("colosseum")
+	Venue venueOne;
 	
-	Venue venue = new Venue();
+	@Autowired
+	@Qualifier("parthenon")
+	Venue venueTwo;
+	
+	@Autowired
+	@Qualifier("amphitheater")
+	Venue venueThree;
 	
 	
 	public int numSeatsAvailable() {
 		// TODO Auto-generated method stub
 		
-		int availableSeats = venue.getAvailableSeats();
+		int availableSeats = venueOne.getAvailableSeats();
 		
 		return availableSeats;
 	}

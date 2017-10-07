@@ -2,6 +2,8 @@ package com.revature.walmart.holdservice;
 
 import java.util.ArrayList;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import com.revature.walmart.beans.SeatHold;
@@ -10,18 +12,20 @@ import com.revature.walmart.beans.Venue;
 @Repository("holdserviceimpl")
 public class HoldServiceImpl implements HoldService{
 
-	ArrayList<SeatHold> seatsOnHold;
+	@Autowired
+	@Qualifier("parthenon")
+	Venue venue;
 	
 	
 	public SeatHold findSeatHoldByEmail(String customerEmail) {
 		
 		SeatHold seatHold = new SeatHold();
 		
-		for (int i = 0; i < seatsOnHold.size(); i++) {
+		for (int i = 0; i < venue.getSeatsOnHold().size(); i++) {
 			
-			if (seatsOnHold.get(i).getCustomerEmail() == customerEmail) {
+			if (venue.getSeatsOnHold().get(i).getCustomerEmail() == customerEmail) {
 				
-				seatHold = seatsOnHold.get(i);
+				seatHold = venue.getSeatsOnHold().get(i);
 				
 			}
 			
@@ -62,7 +66,7 @@ public class HoldServiceImpl implements HoldService{
 	public void addSeatHold(SeatHold seatHold) {
 		// TODO Auto-generated method stub
 		
-		seatsOnHold.add(seatHold);
+		venue.getSeatsOnHold().add(seatHold);
 		
 	}
 

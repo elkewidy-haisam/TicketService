@@ -50,6 +50,8 @@ public class TicketServiceConfig {
 			ArrayList<SeatHold> seatsOnHold = new ArrayList<SeatHold>();
 			seatsOnHold.add(new SeatHold(5, "elkewidyhaisam@gmail.com"));
 			
+			parthenon.setSeatsOnHold(seatsOnHold);
+			
 			return parthenon;
 			
 		}

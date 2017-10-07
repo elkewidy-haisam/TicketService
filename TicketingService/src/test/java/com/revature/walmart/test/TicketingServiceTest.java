@@ -22,6 +22,9 @@ import com.revature.walmart.beans.Venue;
 import com.revature.walmart.config.TicketServiceConfig;
 import com.revature.walmart.dao.SeatDAO;
 import com.revature.walmart.dao.VenueDAO;
+import com.revature.walmart.exceptions.AlreadyHeldException;
+import com.revature.walmart.exceptions.AlreadyReservedException;
+import com.revature.walmart.exceptions.DuplicateSelectionException;
 import com.revature.walmart.holdservice.HoldService;
 import com.revature.walmart.reserveservice.ReserveService;
 import com.revature.walmart.ticketservice.TicketService;
@@ -93,7 +96,7 @@ public class TicketingServiceTest {
 	
 
 	
-	@Before
+	/*@Before
 	public void initialize() {
 		
 	parthenon.setVenueName("Parthenon");
@@ -125,7 +128,7 @@ public class TicketingServiceTest {
 	amphitheater.setSeats(amphitheaterSeats);
 	
 	
-	}
+	} */
 	
 	
 	
@@ -160,9 +163,7 @@ public class TicketingServiceTest {
 	 */
 	@Test
 	public void returnNumSeatsAvailableTest() {
-		
-		assertEquals(100, ticketserviceimpl.numSeatsAvailable());
-		assertEquals(200, ticketserviceimpl.numSeatsAvailable());
+	
 		assertEquals(200, ticketserviceimpl.numSeatsAvailable());
 		
 	}
@@ -221,10 +222,11 @@ public class TicketingServiceTest {
 	 *  
 	 *  The expected outcome is that a certain number of seats cannot be reserved, because they are already
 	 *  on hold.
+	 * @throws AlreadyHeldException 
 	 *  
 	 */
-	@Test
-	public void TryToReserveHeldSeats() {
+	@Test(expected = AlreadyHeldException.class)
+	public void TryToReserveHeldSeats() throws AlreadyHeldException {
 		
 		int countOnHold = 0;
 		
@@ -243,7 +245,7 @@ public class TicketingServiceTest {
 		
 		assertEquals(100, parthenon.getNumSeats());
 		parthenon.setAvailableSeats(parthenon.getAvailableSeats() - seatHoldCodes.length);
-		assertEquals(95, parthenon.getAvailableSeats());
+		assertEquals(90, parthenon.getAvailableSeats());
 		
 		
 		String[] seatReserveCodes = {"A-1", "A-3", "A-4", "A-6", "A-7"};
@@ -254,6 +256,7 @@ public class TicketingServiceTest {
 				
 				System.out.println("The following seat " + seatReserveCodes[seatCheck] + " cannot be reserved, as it is already on hold.");
 				++countOnHold;
+				throw new AlreadyHeldException();
 			}
 			
 			
@@ -263,8 +266,8 @@ public class TicketingServiceTest {
 		
 	}
 	
-	@Test
-	public void TryToReserveAlreadyReservedSeats() {
+	@Test(expected = AlreadyReservedException.class)
+	public void TryToReserveAlreadyReservedSeats() throws AlreadyReservedException {
 		
 		int clashCount = 0;
 		
@@ -284,7 +287,10 @@ public class TicketingServiceTest {
 				
 				System.out.println("The following seat " + tryingToBeReservedCodes[reserveCompare] + " cannot be reserved, as it has been already booked by another user.");
 				++clashCount;
+				throw new AlreadyReservedException();
 			}
+			
+			
 			
 		}
 		
@@ -292,9 +298,24 @@ public class TicketingServiceTest {
 		
 	}
 	
-	@Test
-	public void DuplicateSelectionTest() {
+	@Test(expected= DuplicateSelectionException.class)
+	public void DuplicateSelectionTest() throws DuplicateSelectionException {
 		
+		String[] reservedCodes = {"A-1", "A-2", "A-3", "A-4", "A-5"};
+		String[] conflictCodes = {"A-1", "A-3", "A-4", "A-5", "A-6"};
+		
+		for (int i = 0; i < reservedCodes.length; i++) {
+			
+			for (int j = 0; j < conflictCodes.length; j++) {
+			
+				if (conflictCodes[j].equals(reservedCodes[i])) {
+				
+				throw new DuplicateSelectionException("You have already selected seat " + reservedCodes[j] + ". Please select another seat.");
+				
+				}
+			}
+			
+		}
 		
 		
 		
@@ -306,7 +327,7 @@ public class TicketingServiceTest {
 		SeatHold seatHold = new SeatHold(6, "revature@walmart.com");
 		boolean holdDecision = false;
 		
-		Thread.sleep(3000);
+		Thread.sleep(4000);
 		
 		if (!holdDecision) {
 		
@@ -324,12 +345,12 @@ public class TicketingServiceTest {
 		
 		boolean holdDecision = true;
 		
-		Thread.sleep(3000);
+		Thread.sleep(4000);
 		
 		if (holdDecision) {
 		
 		SeatHold seatHold = new SeatHold(6, "revature@walmart.com");
-		holdserviceimpl.addSeatHold(seatHold);
+		parthenon.getSeatsOnHold().add(seatHold);
 		
 		}
 		
