@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.springframework.context.annotation.Bean;
+
 import com.revature.walmart.beans.Seat;
 import com.revature.walmart.beans.SeatStatus;
 import com.revature.walmart.beans.Venue;
@@ -14,7 +16,7 @@ public class VenueDAOImpl implements VenueDAO{
 	
 	Venue venue;
 	
-	@Override
+
 	public Map<Seat, SeatStatus> generateSeatingGrid() {
 		// TODO Auto-generated method stub
 		
@@ -52,7 +54,7 @@ public class VenueDAOImpl implements VenueDAO{
 		return null;
 	}
 
-	@Override
+	
 	public Map<Seat, SeatStatus> generateSeatsForVenueByCode(Venue venue) {
 		int rows = venue.getNumSeats()/10;
 		char[] letters = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
@@ -73,7 +75,7 @@ public class VenueDAOImpl implements VenueDAO{
 		return venueSeats;
 	}
 
-	@Override
+	
 	public Set<Seat> findSeatsByEmail() {
 		
 		Set<Seat> seatsOnHold = new HashSet<Seat>();

@@ -213,7 +213,7 @@ public class TicketingServiceTest {
 		
 		for (int seatCheck = 0; seatCheck < seatReserveCodes.length; seatCheck++) {
 			
-			if (parthenon.getSeats().get(seatReserveCodes[seatCheck]).equals(SeatStatus.On_Hold)) {
+			if (parthenon.getSeats().get(seatDao.FindSeatsByCode(parthenon, seatReserveCodes[seatCheck])).equals(SeatStatus.On_Hold)) {
 				
 				System.out.println("The following seat " + seatReserveCodes[seatCheck] + " cannot be reserved, as it is already on hold.");
 				++countOnHold;
@@ -243,7 +243,7 @@ public class TicketingServiceTest {
 		
 		for (int reserveCompare = 0; reserveCompare < tryingToBeReservedCodes.length; reserveCompare++) {
 			
-			if (parthenon.getSeats().get(tryingToBeReservedCodes[reserveCompare]).equals(SeatStatus.Reserved)) {
+			if (parthenon.getSeats().get(seatDao.FindSeatsByCode(parthenon, tryingToBeReservedCodes[reserveCompare])).equals(SeatStatus.Reserved)) {
 				
 				System.out.println("The following seat " + tryingToBeReservedCodes[reserveCompare] + " cannot be reserved, as it has been already booked by another user.");
 				++clashCount;
@@ -255,33 +255,11 @@ public class TicketingServiceTest {
 		
 	}
 	
+	
+
 	@Test
 	public void SameSelectionMoreThanOnce() {
 		
-		
-		
-	}
-	
-	
-	@Test
-	public void SimultaneousReservation() {
-		
-		
-		
-		
-		
-	}
-	
-	@Test
-	public void SimultaneousReservationAndHold() {
-		
-		
-		
-		
-	}
-	
-	@Test
-	public void SimultaneousHold() {
 		
 		
 	}

@@ -16,9 +16,10 @@ import com.revature.walmart.beans.Venue;
  */
 public class TicketServiceImpl implements TicketService{
 
+	
 	Venue venue = new Venue();
 	
-	@Override
+	
 	public int numSeatsAvailable() {
 		// TODO Auto-generated method stub
 		
@@ -27,7 +28,7 @@ public class TicketServiceImpl implements TicketService{
 		return availableSeats;
 	}
 
-	@Override
+	
 	public SeatHold findAndholdSeats(int numSeats, String customerEmail) {
 		// TODO Auto-generated method stub
 		
@@ -39,7 +40,7 @@ public class TicketServiceImpl implements TicketService{
 		
 	}
 
-	@Override
+	
 	public String reserveSeats(int seatHoldId, String customerEmail) {
 		
 		// you will want to find a way to generate confirmation codes automatically with every reservation that's made...

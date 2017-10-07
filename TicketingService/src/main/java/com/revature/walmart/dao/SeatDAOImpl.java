@@ -11,8 +11,6 @@ import com.revature.walmart.beans.Venue;
 public class SeatDAOImpl implements SeatDAO {
 
 	
-	
-	@Override
 	public void UpdateSeatStatus(Venue venue, Seat seat) {
 		
 		Map<Seat, SeatStatus> seats = venue.getSeats();
@@ -24,18 +22,17 @@ public class SeatDAOImpl implements SeatDAO {
 	}
 
 
-	@Override
+	
 	public Seat FindSeatsByCode(Venue venue, String seatCode) {
 		// TODO Auto-generated method stub
 		Map<Seat, SeatStatus> seats = venue.getSeats();
-		List<Seat> l = new ArrayList<Seat>(seats.keySet());
 		Seat seat = new Seat();
 		
-		for (Seat nextSeat : l) {
+		for (Seat nextSeat : seats.keySet()) {
 			
-			if (seat.getSeatCode().equals(seatCode)) {
+			if (nextSeat.getSeatCode().equals(seatCode)) {
 				
-				// get the seat key only from the map
+				seat = nextSeat;
 				
 			}
 			
@@ -47,7 +44,6 @@ public class SeatDAOImpl implements SeatDAO {
 	}
 
 
-	@Override
 	public void FindSeatsByNumber(Venue venue, int seatNumber) {
 		// TODO Auto-generated method stub
 		

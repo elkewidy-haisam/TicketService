@@ -5,10 +5,10 @@ import com.revature.walmart.beans.Venue;
 
 public interface SeatDAO {
 
-	void UpdateSeatStatus(Venue venue, Seat seat);
+	public void UpdateSeatStatus(Venue venue, Seat seat);
 
-	Seat FindSeatsByCode(Venue venue, String seatCode);
+	public Seat FindSeatsByCode(Venue venue, String seatCode);
 
-	void FindSeatsByNumber(Venue venue, int seatNumber);
+	public void FindSeatsByNumber(Venue venue, int seatNumber);
 
 }

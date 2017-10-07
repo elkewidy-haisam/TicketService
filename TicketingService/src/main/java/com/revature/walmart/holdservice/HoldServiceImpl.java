@@ -9,7 +9,7 @@ public class HoldServiceImpl implements HoldService{
 
 	ArrayList<SeatHold> seatsOnHold;
 	
-	@Override
+	
 	public SeatHold findSeatHoldByEmail(String customerEmail) {
 		
 		SeatHold seatHold = new SeatHold();
@@ -29,7 +29,7 @@ public class HoldServiceImpl implements HoldService{
 		
 	}
 	
-	@Override
+	
 	public ArrayList<SeatHold> findSeatHoldsByVenue(Venue venue) {
 		
 		ArrayList<SeatHold> seatsOnHold = venue.getSeatsOnHold();
@@ -38,7 +38,7 @@ public class HoldServiceImpl implements HoldService{
 		
 	}
 
-	@Override
+	
 	public void deleteSeatHold(Venue venue, SeatHold seatHold) {
 		
 		ArrayList<SeatHold> seatsOnHold = venue.getSeatsOnHold();
@@ -55,7 +55,7 @@ public class HoldServiceImpl implements HoldService{
 	
 	}
 
-	@Override
+	
 	public void addSeatHold(SeatHold seatHold) {
 		// TODO Auto-generated method stub
 		
