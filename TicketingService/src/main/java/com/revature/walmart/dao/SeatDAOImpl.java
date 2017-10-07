@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Repository;
+
 import com.revature.walmart.beans.Seat;
 import com.revature.walmart.beans.SeatStatus;
 import com.revature.walmart.beans.Venue;
 
+@Repository("seatdaoimpl")
 public class SeatDAOImpl implements SeatDAO {
 
 	

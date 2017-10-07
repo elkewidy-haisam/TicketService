@@ -1,5 +1,7 @@
 package com.revature.walmart.ticketservice;
 
+import org.springframework.stereotype.Repository;
+
 import com.revature.walmart.beans.SeatHold;
 import com.revature.walmart.beans.Venue;
 
@@ -14,6 +16,7 @@ import com.revature.walmart.beans.Venue;
  * @author Admin
  *
  */
+@Repository("ticketserviceimpl")
 public class TicketServiceImpl implements TicketService{
 
 	

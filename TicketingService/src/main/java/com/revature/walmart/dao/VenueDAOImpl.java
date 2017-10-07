@@ -6,11 +6,13 @@ import java.util.Map;
 import java.util.Set;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Repository;
 
 import com.revature.walmart.beans.Seat;
 import com.revature.walmart.beans.SeatStatus;
 import com.revature.walmart.beans.Venue;
 
+@Repository("venuedaoimpl")
 public class VenueDAOImpl implements VenueDAO{
 
 	

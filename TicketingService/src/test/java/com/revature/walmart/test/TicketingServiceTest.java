@@ -9,16 +9,22 @@ import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.revature.walmart.beans.Seat;
 import com.revature.walmart.beans.SeatHold;
 import com.revature.walmart.beans.SeatStatus;
 import com.revature.walmart.beans.Venue;
-import com.revature.walmart.dao.SeatDAOImpl;
-import com.revature.walmart.dao.VenueDAOImpl;
-import com.revature.walmart.holdservice.HoldServiceImpl;
-import com.revature.walmart.reserveservice.ReserveServiceImpl;
-import com.revature.walmart.ticketservice.TicketServiceImpl;
+import com.revature.walmart.config.TicketServiceConfig;
+import com.revature.walmart.dao.SeatDAO;
+import com.revature.walmart.dao.VenueDAO;
+import com.revature.walmart.holdservice.HoldService;
+import com.revature.walmart.reserveservice.ReserveService;
+import com.revature.walmart.ticketservice.TicketService;
 
 /**
  *  
@@ -41,21 +47,51 @@ import com.revature.walmart.ticketservice.TicketServiceImpl;
  * @author Haisam Elkewidy
  *
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes=TicketServiceConfig.class)
 public class TicketingServiceTest {
 	
+	@Autowired
+	@Qualifier("ticketserviceimpl")
+	TicketService ticketserviceimpl;
 	
-	TicketServiceImpl ticketService = new TicketServiceImpl();
-	ReserveServiceImpl reserveService = new ReserveServiceImpl();
-	HoldServiceImpl holdService = new HoldServiceImpl();
-	SeatDAOImpl seatDao = new SeatDAOImpl();
-	VenueDAOImpl venueDao = new VenueDAOImpl();
+	@Autowired
+	@Qualifier("reserveserviceimpl")
+	ReserveService reserveserviceimpl;
+	
+	@Autowired
+	@Qualifier("holdserviceimpl")
+	HoldService holdserviceimpl;
+	
+	@Autowired
+	@Qualifier("seatdaoimpl")
+	SeatDAO seatdaoimpl;
+	
+	@Autowired
+	@Qualifier("venuedaoimpl")
+	VenueDAO venuedaoimpl;
 	
 	
-	ArrayList<Venue> venues = new ArrayList<>();
+	@SuppressWarnings("unchecked")
+	ArrayList<Venue> venues = new ArrayList<Venue>();
 	
-	Venue colosseum = new Venue();
-	Venue amphitheater = new Venue();
-	Venue parthenon = new Venue();
+	@Autowired
+	@Qualifier("colosseum")
+	Venue colosseum;
+	
+	@Autowired
+	@Qualifier("amphitheater")
+	Venue amphitheater;
+	
+	@Autowired
+	@Qualifier("parthenon")
+	Venue parthenon;
+	
+	@Autowired
+	@Qualifier("seatHold")
+	SeatHold seatHold;
+	
+
 	
 	@Before
 	public void initialize() {
@@ -87,6 +123,7 @@ public class TicketingServiceTest {
 	parthenon.setSeats(parthenonSeats);
 	colosseum.setSeats(colosseumSeats);
 	amphitheater.setSeats(amphitheaterSeats);
+	
 	
 	}
 	
@@ -124,9 +161,9 @@ public class TicketingServiceTest {
 	@Test
 	public void returnNumSeatsAvailableTest() {
 		
-		assertEquals(100, ticketService.numSeatsAvailable());
-		assertEquals(200, ticketService.numSeatsAvailable());
-		assertEquals(200, ticketService.numSeatsAvailable());
+		assertEquals(100, ticketserviceimpl.numSeatsAvailable());
+		assertEquals(200, ticketserviceimpl.numSeatsAvailable());
+		assertEquals(200, ticketserviceimpl.numSeatsAvailable());
 		
 	}
 	
@@ -145,7 +182,7 @@ public class TicketingServiceTest {
 		
 		String[] seatHoldCodes = {"A-1", "A-2", "A-3", "A-4", "A-5"};
 		
-		SeatHold seatHold = ticketService.findAndholdSeats(seatHoldCodes.length, "walmart@revature.com");
+		SeatHold seatHold = ticketserviceimpl.findAndholdSeats(seatHoldCodes.length, "walmart@revature.com");
 		assertEquals(5, seatHold.getNumSeats());
 		assertEquals("walmart@revature.com", seatHold.getCustomerEmail());
 		
@@ -170,7 +207,7 @@ public class TicketingServiceTest {
 	@Test
 	public void reserveSeatsTest() {
 		
-		String reservationCode = ticketService.reserveSeats(2000, "walmart@revature.com");
+		String reservationCode = ticketserviceimpl.reserveSeats(2000, "walmart@revature.com");
 		assertThat(reservationCode, containsString("walm"));
 		assertThat(reservationCode, containsString("2000"));
 		
@@ -193,13 +230,13 @@ public class TicketingServiceTest {
 		
 		String[] seatHoldCodes = {"A-1", "A-2", "A-3", "A-4", "A-5"};
 		
-		SeatHold seatHold = ticketService.findAndholdSeats(seatHoldCodes.length, "walmart@revature.com");
+		SeatHold seatHold = ticketserviceimpl.findAndholdSeats(seatHoldCodes.length, "walmart@revature.com");
 		assertEquals(5, seatHold.getNumSeats());
 		assertEquals("walmart@revature.com", seatHold.getCustomerEmail());
 		
 		for (int reserveSeat = 0; reserveSeat < seatHoldCodes.length; reserveSeat++) {
 			
-			parthenon.getSeats().put(seatDao.FindSeatsByCode(parthenon, seatHoldCodes[reserveSeat]), SeatStatus.On_Hold);
+			parthenon.getSeats().put(seatdaoimpl.FindSeatsByCode(parthenon, seatHoldCodes[reserveSeat]), SeatStatus.On_Hold);
 			
 			
 		}
@@ -213,7 +250,7 @@ public class TicketingServiceTest {
 		
 		for (int seatCheck = 0; seatCheck < seatReserveCodes.length; seatCheck++) {
 			
-			if (parthenon.getSeats().get(seatDao.FindSeatsByCode(parthenon, seatReserveCodes[seatCheck])).equals(SeatStatus.On_Hold)) {
+			if (parthenon.getSeats().get(seatdaoimpl.FindSeatsByCode(parthenon, seatReserveCodes[seatCheck])).equals(SeatStatus.On_Hold)) {
 				
 				System.out.println("The following seat " + seatReserveCodes[seatCheck] + " cannot be reserved, as it is already on hold.");
 				++countOnHold;
@@ -237,13 +274,13 @@ public class TicketingServiceTest {
 		
 		for (int reserveCheck = 0; reserveCheck < alreadyReservedCodes.length; reserveCheck++) {
 			
-			parthenon.getSeats().put(seatDao.FindSeatsByCode(parthenon, alreadyReservedCodes[reserveCheck]), SeatStatus.Reserved);
+			parthenon.getSeats().put(seatdaoimpl.FindSeatsByCode(parthenon, alreadyReservedCodes[reserveCheck]), SeatStatus.Reserved);
 			
 		}
 		
 		for (int reserveCompare = 0; reserveCompare < tryingToBeReservedCodes.length; reserveCompare++) {
 			
-			if (parthenon.getSeats().get(seatDao.FindSeatsByCode(parthenon, tryingToBeReservedCodes[reserveCompare])).equals(SeatStatus.Reserved)) {
+			if (parthenon.getSeats().get(seatdaoimpl.FindSeatsByCode(parthenon, tryingToBeReservedCodes[reserveCompare])).equals(SeatStatus.Reserved)) {
 				
 				System.out.println("The following seat " + tryingToBeReservedCodes[reserveCompare] + " cannot be reserved, as it has been already booked by another user.");
 				++clashCount;
@@ -255,12 +292,48 @@ public class TicketingServiceTest {
 		
 	}
 	
-	
-
 	@Test
-	public void SameSelectionMoreThanOnce() {
+	public void DuplicateSelectionTest() {
 		
 		
+		
+		
+	}
+	
+	@Test
+	public void DeleteSeatHoldAfterThreeSeconds() throws InterruptedException {
+		
+		SeatHold seatHold = new SeatHold(6, "revature@walmart.com");
+		boolean holdDecision = false;
+		
+		Thread.sleep(3000);
+		
+		if (!holdDecision) {
+		
+		seatHold = null;
+		
+		}
+		
+		assertNull(seatHold);
+		System.gc();
+		
+	}
+	
+	@Test
+	public void commitSeatsAfterBeingHeld() throws InterruptedException {
+		
+		boolean holdDecision = true;
+		
+		Thread.sleep(3000);
+		
+		if (holdDecision) {
+		
+		SeatHold seatHold = new SeatHold(6, "revature@walmart.com");
+		holdserviceimpl.addSeatHold(seatHold);
+		
+		}
+		
+		assertEquals(2, parthenon.getSeatsOnHold().size());
 		
 	}
 	

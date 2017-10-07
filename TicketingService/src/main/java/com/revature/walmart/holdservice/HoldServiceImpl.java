@@ -2,9 +2,12 @@ package com.revature.walmart.holdservice;
 
 import java.util.ArrayList;
 
+import org.springframework.stereotype.Repository;
+
 import com.revature.walmart.beans.SeatHold;
 import com.revature.walmart.beans.Venue;
 
+@Repository("holdserviceimpl")
 public class HoldServiceImpl implements HoldService{
 
 	ArrayList<SeatHold> seatsOnHold;
