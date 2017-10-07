@@ -15,7 +15,7 @@ import java.util.Map;
  * 
  * 
  * 
- * @author Admin
+ * @author Haisam Elkewidy
  *
  */
 public class Venue {
@@ -29,15 +29,25 @@ public class Venue {
 	
 	private String venueName;
 	
-	public Map<String, SeatStatus> seats;
+	public Map<Seat, SeatStatus> seats;
+	
+	public ArrayList<SeatHold> seatsOnHold;
 	
 	
 	
-	public Map<String, SeatStatus> getSeats() {
+	public ArrayList<SeatHold> getSeatsOnHold() {
+		return seatsOnHold;
+	}
+
+	public void setSeatsOnHold(ArrayList<SeatHold> seatsOnHold) {
+		this.seatsOnHold = seatsOnHold;
+	}
+
+	public Map<Seat, SeatStatus> getSeats() {
 		return seats;
 	}
 
-	public void setSeats(Map<String, SeatStatus> seats) {
+	public void setSeats(Map<Seat, SeatStatus> seats) {
 		this.seats = seats;
 	}
 

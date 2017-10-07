@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
+import com.revature.walmart.beans.Seat;
 import com.revature.walmart.beans.SeatStatus;
 import com.revature.walmart.beans.Venue;
 import com.revature.walmart.ticketservice.TicketServiceImpl;
@@ -85,7 +86,7 @@ public class TicketServiceRunner {
 	 * @param venue
 	 * @return
 	 */
-	public static Map<String, SeatStatus> generateSeatsForVenue(Venue venue) {
+	public static Map<Seat, SeatStatus> generateSeatsForVenue(Venue venue) {
 		int rows = venue.getNumSeats()/10;
 		char[] letters = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
 		
@@ -137,9 +138,9 @@ public class TicketServiceRunner {
 		venues.add(colosseum);
 		venues.add(amphitheater);
 		
-		Map<String, SeatStatus> parthenonSeats = generateSeatsForVenue(venues.get(0));
-		Map<String, SeatStatus> colosseumSeats = generateSeatsForVenue(venues.get(1));
-		Map<String, SeatStatus> amphitheaterSeats = generateSeatsForVenue(venues.get(2));
+		Map<Seat, SeatStatus> parthenonSeats = generateSeatsForVenue(venues.get(0));
+		Map<Seat, SeatStatus> colosseumSeats = generateSeatsForVenue(venues.get(1));
+		Map<Seat, SeatStatus> amphitheaterSeats = generateSeatsForVenue(venues.get(2));
 		
 		parthenon.setSeats(parthenonSeats);
 		colosseum.setSeats(colosseumSeats);
@@ -199,7 +200,7 @@ public class TicketServiceRunner {
 		//depending on the seat code selected, you then go to the chosen venue map and set each one to reserved.
 		
 		
-			String[] seatCodes = seats.split(",");
+			String seatCodes = seats.split(",");
 		
 		for (int seat = 0; seat < seatCodes.length; seat++) {
 			
@@ -207,7 +208,7 @@ public class TicketServiceRunner {
 			
 			if (venues.get(input-1).getSeats().containsKey(seatCodes[seat])) {
 				
-				Map<String, SeatStatus> updatedVenueSeatCharting = venues.get(input - 1).getSeats();
+				Map<Seat, SeatStatus> updatedVenueSeatCharting = venues.get(input - 1).getSeats();
 				updatedVenueSeatCharting.put(seatCodes[seat], SeatStatus.Reserved);
 				venues.get(input-1).setSeats(updatedVenueSeatCharting);
 				System.out.println("The selected seat " + seatCodes[seat] + " has been " + venues.get(input - 1).getSeats().get(seatCodes[seat]) );

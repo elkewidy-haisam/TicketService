@@ -3,6 +3,7 @@ package com.revature.walmart.holdservice;
 import java.util.ArrayList;
 
 import com.revature.walmart.beans.SeatHold;
+import com.revature.walmart.beans.Venue;
 
 public class HoldServiceImpl implements HoldService{
 
@@ -27,9 +28,20 @@ public class HoldServiceImpl implements HoldService{
 		return seatHold;
 		
 	}
+	
+	@Override
+	public ArrayList<SeatHold> findSeatHoldsByVenue(Venue venue) {
+		
+		ArrayList<SeatHold> seatsOnHold = venue.getSeatsOnHold();
+		
+		return seatsOnHold;
+		
+	}
 
 	@Override
-	public void deleteSeatHold(SeatHold seatHold) {
+	public void deleteSeatHold(Venue venue, SeatHold seatHold) {
+		
+		ArrayList<SeatHold> seatsOnHold = venue.getSeatsOnHold();
 		
 		for (int i = 0; i < seatsOnHold.size(); i++) {
 			
@@ -50,24 +62,5 @@ public class HoldServiceImpl implements HoldService{
 		seatsOnHold.add(seatHold);
 		
 	}
-
-	@Override
-	public void updateSeatHoldNumbers(SeatHold seatHold) {
-		// TODO Auto-generated method stub
-		
-		String customerEmail = seatHold.getCustomerEmail();
-		
-		for (int j = 0; j < seatsOnHold.size(); j++) {
-			
-			if (seatsOnHold.get(j).getCustomerEmail().equals(customerEmail)) {
-				
-				seatsOnHold.get(j).setCustomerEmail(customerEmail);
-				seatsOnHold.get(j).setNumSeats(seatHold.getNumSeats());
-				
-			}
-			
-		}
-	}
-	
 
 }

@@ -1,5 +1,6 @@
 package com.revature.walmart.beans;
 
+
 public class Seat {
 	
 	private String seatCode;
@@ -8,6 +9,12 @@ public class Seat {
 	
 	private SeatStatus status;
 	
+	
+	public Seat() {
+		
+		
+		
+	}
 	
 	public Seat(int seatNumber, SeatStatus status) {
 		super();
@@ -50,6 +57,14 @@ public class Seat {
 
 	public void setStatus(SeatStatus status) {
 		this.status = status;
+	}
+
+	public String getPlaceholderEmail() {
+		return placeholderEmail;
+	}
+
+	public void setPlaceholderEmail(String placeholderEmail) {
+		this.placeholderEmail = placeholderEmail;
 	}	
 	
 	

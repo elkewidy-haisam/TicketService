@@ -53,25 +53,24 @@ public class VenueDAOImpl implements VenueDAO{
 	}
 
 	@Override
-	public Map<String, SeatStatus> generateSeatsForVenue() {
-		
+	public Map<Seat, SeatStatus> generateSeatsForVenueByCode(Venue venue) {
 		int rows = venue.getNumSeats()/10;
 		char[] letters = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
 		
-		Map<String, SeatStatus> venueSeats = new HashMap<String, SeatStatus>();
+		Map<Seat, SeatStatus> venueSeats = new HashMap<Seat, SeatStatus>();
 		
 		for (int i = 0; i < rows; i++) {
 			
 			for (int j = 1; j <= 10; j++) {
 				
-				venueSeats.put(letters[i] + "-" + j, SeatStatus.Available);
+				Seat seat = new Seat(letters[i] + "-" + j, SeatStatus.Available);
+				venueSeats.put(seat, SeatStatus.Available);
 				
 			}
 			
 		}
 		
 		return venueSeats;
-		
 	}
 
 	@Override

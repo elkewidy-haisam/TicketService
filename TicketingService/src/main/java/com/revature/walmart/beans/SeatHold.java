@@ -11,10 +11,13 @@ import java.util.Set;
  *    
  * enforced with proper encapsulation to access, and mutate, the fields accordingly.   
  *      
- * @author Admin
+ * @author Haisam Elkewidy
  *
  */
 public class SeatHold {
+	
+	//this is most likely sequence generated
+	private int seatHoldId;
 
 	private int numSeats;
 	

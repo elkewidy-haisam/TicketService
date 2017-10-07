@@ -10,9 +10,14 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.revature.walmart.beans.Seat;
 import com.revature.walmart.beans.SeatHold;
 import com.revature.walmart.beans.SeatStatus;
 import com.revature.walmart.beans.Venue;
+import com.revature.walmart.dao.SeatDAOImpl;
+import com.revature.walmart.dao.VenueDAOImpl;
+import com.revature.walmart.holdservice.HoldServiceImpl;
+import com.revature.walmart.reserveservice.ReserveServiceImpl;
 import com.revature.walmart.ticketservice.TicketServiceImpl;
 
 /**
@@ -33,17 +38,23 @@ import com.revature.walmart.ticketservice.TicketServiceImpl;
  * SimultaneousHold() - what happens when two users try to put the same seats on hold at the exact same time
  * SimultaneousReservationAndHold() - what happens when one user tries to reserve a group of seats, and another users wants to put the same group of seats on hold, at the exact same time.
  *          
- * @author Admin
+ * @author Haisam Elkewidy
  *
  */
 public class TicketingServiceTest {
 	
 	
 	TicketServiceImpl ticketService = new TicketServiceImpl();
+	ReserveServiceImpl reserveService = new ReserveServiceImpl();
+	HoldServiceImpl holdService = new HoldServiceImpl();
+	SeatDAOImpl seatDao = new SeatDAOImpl();
+	VenueDAOImpl venueDao = new VenueDAOImpl();
+	
+	
 	ArrayList<Venue> venues = new ArrayList<>();
+	
 	Venue colosseum = new Venue();
 	Venue amphitheater = new Venue();
-	
 	Venue parthenon = new Venue();
 	
 	@Before
@@ -69,9 +80,9 @@ public class TicketingServiceTest {
 	venues.add(colosseum);
 	venues.add(amphitheater);
 	
-	Map<String, SeatStatus> parthenonSeats = generateSeatsForVenue(venues.get(0));
-	Map<String, SeatStatus> colosseumSeats = generateSeatsForVenue(venues.get(1));
-	Map<String, SeatStatus> amphitheaterSeats = generateSeatsForVenue(venues.get(2));
+	Map<Seat, SeatStatus> parthenonSeats = generateSeatsForVenueByCode(venues.get(0));
+	Map<Seat, SeatStatus> colosseumSeats = generateSeatsForVenueByCode(venues.get(1));
+	Map<Seat, SeatStatus> amphitheaterSeats = generateSeatsForVenueByCode(venues.get(2));
 	
 	parthenon.setSeats(parthenonSeats);
 	colosseum.setSeats(colosseumSeats);
@@ -81,17 +92,19 @@ public class TicketingServiceTest {
 	
 	
 	
-	private Map<String, SeatStatus> generateSeatsForVenue(Venue venue) {
+	private Map<Seat, SeatStatus> generateSeatsForVenueByCode(Venue venue) {
+		
 		int rows = venue.getNumSeats()/10;
 		char[] letters = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
 		
-		Map<String, SeatStatus> venueSeats = new HashMap<String, SeatStatus>();
+		Map<Seat, SeatStatus> venueSeats = new HashMap<Seat, SeatStatus>();
 		
 		for (int i = 0; i < rows; i++) {
 			
 			for (int j = 1; j <= 10; j++) {
 				
-				venueSeats.put(letters[i] + "-" + j, SeatStatus.Available);
+				Seat seat = new Seat(letters[i] + "-" + j, SeatStatus.Available);
+				venueSeats.put(seat, SeatStatus.Available);
 				
 			}
 			
@@ -102,8 +115,6 @@ public class TicketingServiceTest {
 
 
 	/**
-	 *  
-	 *  
 	 *  Tests the method com.revature.walmart.ticketservice.TicketService.numSeatsAvailable()
 	 *  
 	 *  It takes no parameters, so we are assuming that a venue is already determined within the method.
@@ -113,12 +124,22 @@ public class TicketingServiceTest {
 	@Test
 	public void returnNumSeatsAvailableTest() {
 		
-		assertEquals(100, ticketService.numSeatsAvailable(parthenon));
-		assertEquals(200, ticketService.numSeatsAvailable(colosseum));
-		assertEquals(200, ticketService.numSeatsAvailable(amphitheater));
+		assertEquals(100, ticketService.numSeatsAvailable());
+		assertEquals(200, ticketService.numSeatsAvailable());
+		assertEquals(200, ticketService.numSeatsAvailable());
 		
 	}
 	
+	/**
+	 *  
+	 *  Tests the method com.revature.walmart.ticketservice.TicketService.findAndHoldSeats()
+	 *  
+	 *  Takes in the number of seats on hold and the customer's email.
+	 *  
+	 *  @return a seatHold object with that specific information in it.
+	 *  
+	 *  It is assumed that the logic to determine specific seats that are reserved occurs elsewhere.
+	 */
 	@Test
 	public void findAndHoldSeatsTest() {
 		
@@ -135,6 +156,17 @@ public class TicketingServiceTest {
 		
 	}
 	
+	/**
+	 *  
+	 *  Tests the methods com.revature.walmart.ticketservice.TicketService.reserveSeats()
+	 *  
+	 *  Takes in the seatHoldId and the customer's email.
+	 *  
+	 *  Takes segments of both of them to create a unique reservation code for the customer.
+	 *  
+	 *  @return string with the reservation code contained in it.
+	 *  
+	 */
 	@Test
 	public void reserveSeatsTest() {
 		
@@ -145,6 +177,15 @@ public class TicketingServiceTest {
 	}
 	
 	
+	/**
+	 *  
+	 *  Tests what should happen if a user attempts to reserves seat that are already placed on hold
+	 *  by a customer.
+	 *  
+	 *  The expected outcome is that a certain number of seats cannot be reserved, because they are already
+	 *  on hold.
+	 *  
+	 */
 	@Test
 	public void TryToReserveHeldSeats() {
 		
@@ -158,7 +199,7 @@ public class TicketingServiceTest {
 		
 		for (int reserveSeat = 0; reserveSeat < seatHoldCodes.length; reserveSeat++) {
 			
-			parthenon.getSeats().put(seatHoldCodes[reserveSeat], SeatStatus.On_Hold);
+			parthenon.getSeats().put(seatDao.FindSeatsByCode(parthenon, seatHoldCodes[reserveSeat]), SeatStatus.On_Hold);
 			
 			
 		}
@@ -196,7 +237,7 @@ public class TicketingServiceTest {
 		
 		for (int reserveCheck = 0; reserveCheck < alreadyReservedCodes.length; reserveCheck++) {
 			
-			parthenon.getSeats().put(alreadyReservedCodes[reserveCheck], SeatStatus.Reserved);
+			parthenon.getSeats().put(seatDao.FindSeatsByCode(parthenon, alreadyReservedCodes[reserveCheck]), SeatStatus.Reserved);
 			
 		}
 		

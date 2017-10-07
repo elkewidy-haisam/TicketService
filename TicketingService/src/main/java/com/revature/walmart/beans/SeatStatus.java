@@ -11,6 +11,7 @@ import java.io.Serializable;
  * On Hold: means that someone is currently putting it on hold, and may decide to reserve the seats after three seconds.
  * 
  * 
+ * @author Haisam Elkewidy
  */
 public enum SeatStatus implements Serializable{
 	
