@@ -12,7 +12,9 @@ public interface HoldService{
 	
 	public SeatHold findSeatHoldByEmail(String customerEmail);
 	
-	public void deleteSeatHold(Venue venue, SeatHold seatHold);
+	public boolean deleteSeatHoldAfterThreeSeconds(Venue venue, SeatHold seatHold, boolean holdDecision);
+	
+	public boolean commitSeatHoldAfterThreeSeconds(Venue venue, SeatHold seatHold, boolean holdDecision);
 	
 	public ArrayList<SeatHold> findSeatHoldsByVenue(Venue venue);
 	

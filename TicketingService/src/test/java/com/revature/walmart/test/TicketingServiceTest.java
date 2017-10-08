@@ -329,30 +329,21 @@ public class TicketingServiceTest {
 		
 		Thread.sleep(4000);
 		
-		if (!holdDecision) {
+		assertTrue(holdserviceimpl.deleteSeatHoldAfterThreeSeconds(parthenon, seatHold, holdDecision));
 		
-		seatHold = null;
 		
-		}
-		
-		assertNull(seatHold);
-		System.gc();
 		
 	}
 	
 	@Test
 	public void commitSeatsAfterBeingHeld() throws InterruptedException {
 		
+		SeatHold seatHold = new SeatHold(6, "revature@walmart.com");
 		boolean holdDecision = true;
 		
 		Thread.sleep(4000);
 		
-		if (holdDecision) {
-		
-		SeatHold seatHold = new SeatHold(6, "revature@walmart.com");
-		parthenon.getSeatsOnHold().add(seatHold);
-		
-		}
+		assertTrue(holdserviceimpl.commitSeatHoldAfterThreeSeconds(parthenon, seatHold, holdDecision));
 		
 		assertEquals(2, parthenon.getSeatsOnHold().size());
 		

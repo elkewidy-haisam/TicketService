@@ -1,5 +1,7 @@
 package com.revature.walmart.holdservice;
 
+import static org.junit.Assert.assertNull;
+
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,21 +48,24 @@ public class HoldServiceImpl implements HoldService{
 	}
 
 	
-	public void deleteSeatHold(Venue venue, SeatHold seatHold) {
+	public boolean deleteSeatHoldAfterThreeSeconds(Venue venue, SeatHold seatHold, boolean holdDecision) {
 		
-		ArrayList<SeatHold> seatsOnHold = venue.getSeatsOnHold();
+		if (!holdDecision) {
 		
-		for (int i = 0; i < seatsOnHold.size(); i++) {
+			seatHold = null;
 			
-			if (seatsOnHold.get(i) == seatHold) {
-				
-				seatsOnHold.remove(i);
-				
-			}
+			System.gc();
+			
+			return true;
+			
+		} else {
+			
+			return false;
 			
 		}
-	
+		
 	}
+	
 
 	
 	public void addSeatHold(SeatHold seatHold) {
@@ -68,6 +73,26 @@ public class HoldServiceImpl implements HoldService{
 		
 		venue.getSeatsOnHold().add(seatHold);
 		
+	}
+
+
+	public boolean commitSeatHoldAfterThreeSeconds(Venue venue, SeatHold seatHold, boolean holdDecision) {
+		// TODO Auto-generated method stub
+		if (holdDecision) {
+			
+			ArrayList<SeatHold> seatHolds = venue.getSeatsOnHold();
+			
+			seatHolds.add(seatHold);
+			
+			venue.setSeatsOnHold(seatHolds);
+			
+			return true;
+			
+		} else {
+			
+			return false;
+			
+		}
 	}
 
 }
