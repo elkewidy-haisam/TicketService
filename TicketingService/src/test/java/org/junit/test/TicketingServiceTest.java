@@ -1,4 +1,4 @@
-package com.revature.walmart.test;
+package org.junit.test;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.*;
@@ -189,7 +189,7 @@ public class TicketingServiceTest {
 		
 		assertEquals(100, parthenon.getNumSeats());
 		parthenon.setAvailableSeats(parthenon.getAvailableSeats() - seatHoldCodes.length);
-		assertEquals(95, parthenon.getAvailableSeats());
+		assertEquals(90, parthenon.getAvailableSeats());
 		
 		
 	}
@@ -245,7 +245,7 @@ public class TicketingServiceTest {
 		
 		assertEquals(100, parthenon.getNumSeats());
 		parthenon.setAvailableSeats(parthenon.getAvailableSeats() - seatHoldCodes.length);
-		assertEquals(90, parthenon.getAvailableSeats());
+		assertEquals(95, parthenon.getAvailableSeats());
 		
 		
 		String[] seatReserveCodes = {"A-1", "A-3", "A-4", "A-6", "A-7"};

@@ -1,7 +1,5 @@
 package com.revature.walmart.holdservice;
 
-import static org.junit.Assert.assertNull;
-
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
