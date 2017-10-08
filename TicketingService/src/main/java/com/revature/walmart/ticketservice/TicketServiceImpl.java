@@ -15,7 +15,7 @@ import com.revature.walmart.beans.Venue;
  * SeatHold findAndHoldSeats(int numSeats, String customerEmail) 
  * String reserveSeats(int seatHoldId, String customerEmail) 
  *  
- * @author Admin
+ * @author Haisam Elkewidy
  *
  */
 @Repository("ticketserviceimpl")

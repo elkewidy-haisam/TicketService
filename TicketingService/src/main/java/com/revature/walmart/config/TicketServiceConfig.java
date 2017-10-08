@@ -20,9 +20,18 @@ import org.apache.commons.dbcp.BasicDataSource;
 import com.revature.walmart.beans.*;
 import com.revature.walmart.dao.*;
 
+/**
+ * Provides java configuration for the following Spring Beans:
+ * 
+ * Venue (colosseum, parthenon, amphitheater)
+ * SeatHold
+ * 
+ * @author Haisam Elkewidy
+ *
+ */
 @Configuration
 @EnableTransactionManagement
-@ComponentScan(basePackages={"com.revature.walmart."})
+@ComponentScan(basePackages={"com.revature.walmart"})
 public class TicketServiceConfig {
 		
 		@Autowired

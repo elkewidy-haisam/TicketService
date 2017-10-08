@@ -9,6 +9,13 @@ import com.revature.walmart.beans.Seat;
 import com.revature.walmart.beans.SeatStatus;
 import com.revature.walmart.beans.Venue;
 
+/**
+ *  
+ *  Concrete implementation class for the reserve service interface.
+ *  
+ * @author Haisam Elkewidy
+ *
+ */
 @Repository("reserveserviceimpl")
 public class ReserveServiceImpl implements ReserveService{
 	

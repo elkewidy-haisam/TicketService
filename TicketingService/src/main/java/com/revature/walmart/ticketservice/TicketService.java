@@ -5,6 +5,19 @@ import org.springframework.stereotype.Repository;
 import com.revature.walmart.beans.SeatHold;
 import com.revature.walmart.beans.Venue;
 
+/**
+ *  
+ * Ticketing Service interface, required to be implemented in coding challenge.
+ *  
+ * Methods contained therein:
+ *  
+ * int numSeatsAvailable()
+ * SeatHold findAndHoldSeats(int numSeats, String customerEmail)
+ * String reserveSeats(int seatHoldId, String customerEmail)
+ *  
+ * @author Brian Massey, Walmart
+ *
+ */
 @Repository
 public interface TicketService {
 	
