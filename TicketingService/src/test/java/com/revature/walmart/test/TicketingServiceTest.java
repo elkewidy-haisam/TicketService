@@ -226,7 +226,7 @@ public class TicketingServiceTest {
 	 *  
 	 */
 	@Test(expected = AlreadyHeldException.class)
-	public void TryToReserveHeldSeats() throws AlreadyHeldException {
+	public void TryToReserveHeldSeatsTest() throws AlreadyHeldException {
 		
 		int countOnHold = 0;
 		
@@ -267,7 +267,7 @@ public class TicketingServiceTest {
 	}
 	
 	@Test(expected = AlreadyReservedException.class)
-	public void TryToReserveAlreadyReservedSeats() throws AlreadyReservedException {
+	public void TryToReserveAlreadyReservedSeatsTest() throws AlreadyReservedException {
 		
 		int clashCount = 0;
 		
@@ -322,7 +322,7 @@ public class TicketingServiceTest {
 	}
 	
 	@Test
-	public void DeleteSeatHoldAfterThreeSeconds() throws InterruptedException {
+	public void DeleteSeatHoldAfterThreeSecondsTest() throws InterruptedException {
 		
 		SeatHold seatHold = new SeatHold(6, "revature@walmart.com");
 		boolean holdDecision = false;
@@ -336,7 +336,7 @@ public class TicketingServiceTest {
 	}
 	
 	@Test
-	public void commitSeatsAfterBeingHeld() throws InterruptedException {
+	public void commitSeatsAfterBeingHeldTest() throws InterruptedException {
 		
 		SeatHold seatHold = new SeatHold(6, "revature@walmart.com");
 		boolean holdDecision = true;
