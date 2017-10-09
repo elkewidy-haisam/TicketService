@@ -3,11 +3,6 @@ package org.junit.test;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +10,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.revature.walmart.beans.Seat;
 import com.revature.walmart.beans.SeatHold;
 import com.revature.walmart.beans.SeatStatus;
 import com.revature.walmart.beans.Venue;
@@ -40,12 +34,6 @@ import com.revature.walmart.ticketservice.TicketService;
  * 4. If a user attempts to reserve seats that another user has placed on hold, then the user should not be expected to successfully reserve the held seats.
  * 5. If a user attempts to reserve seats that have already been reserved by a prior user, then the current user should not be able to reserve those same exact seats.
  * 
- * Because the API assumes a single user will be consuming it in a very controlled environment, concurrency tests were not included.       
- * However, this can be looked into in a much more scalable iteration of this application. The tests methods meant to determine this are as follows:
- * 
- * SimultaneousReservation() - what happens when two users try to reserve the same seats at the exact same time
- * SimultaneousHold() - what happens when two users try to put the same seats on hold at the exact same time
- * SimultaneousReservationAndHold() - what happens when one user tries to reserve a group of seats, and another users wants to put the same group of seats on hold, at the exact same time.
  *          
  * @author Haisam Elkewidy
  *
@@ -74,10 +62,6 @@ public class TicketingServiceTest {
 	@Qualifier("venuedaoimpl")
 	VenueDAO venuedaoimpl;
 	
-	
-	@SuppressWarnings("unchecked")
-	ArrayList<Venue> venues = new ArrayList<Venue>();
-	
 	@Autowired
 	@Qualifier("colosseum")
 	Venue colosseum;
@@ -93,65 +77,6 @@ public class TicketingServiceTest {
 	@Autowired
 	@Qualifier("seatHold")
 	SeatHold seatHold;
-	
-
-	
-	/*@Before
-	public void initialize() {
-		
-	parthenon.setVenueName("Parthenon");
-	parthenon.setNumSeats(100);
-	parthenon.setAvailableSeats(100);
-	parthenon.setTemporarySeats(0);
-	
-	
-	colosseum.setVenueName("Colosseum");
-	colosseum.setNumSeats(200);
-	colosseum.setAvailableSeats(200);
-	colosseum.setTemporarySeats(0);
-	
-	amphitheater.setVenueName("Amphitheater");
-	amphitheater.setAvailableSeats(200);
-	amphitheater.setNumSeats(200);
-	amphitheater.setTemporarySeats(0);
-	
-	venues.add(parthenon);
-	venues.add(colosseum);
-	venues.add(amphitheater);
-	
-	Map<Seat, SeatStatus> parthenonSeats = generateSeatsForVenueByCode(venues.get(0));
-	Map<Seat, SeatStatus> colosseumSeats = generateSeatsForVenueByCode(venues.get(1));
-	Map<Seat, SeatStatus> amphitheaterSeats = generateSeatsForVenueByCode(venues.get(2));
-	
-	parthenon.setSeats(parthenonSeats);
-	colosseum.setSeats(colosseumSeats);
-	amphitheater.setSeats(amphitheaterSeats);
-	
-	
-	} */
-	
-	
-	
-	private Map<Seat, SeatStatus> generateSeatsForVenueByCode(Venue venue) {
-		
-		int rows = venue.getNumSeats()/10;
-		char[] letters = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
-		
-		Map<Seat, SeatStatus> venueSeats = new HashMap<Seat, SeatStatus>();
-		
-		for (int i = 0; i < rows; i++) {
-			
-			for (int j = 1; j <= 10; j++) {
-				
-				Seat seat = new Seat(letters[i] + "-" + j, SeatStatus.Available);
-				venueSeats.put(seat, SeatStatus.Available);
-				
-			}
-			
-		}
-		
-		return venueSeats;
-	}
 
 
 	/**
@@ -266,6 +191,14 @@ public class TicketingServiceTest {
 		
 	}
 	
+	/**
+	 *  
+	 * Tests what happens when a user tries to select a seat that another user has already reserved. 
+	 * Should throw an AlreadyReservedException, then the request is rolled back. This will force the
+	 * user to select a different seat. 
+	 *  
+	 * @throws AlreadyReservedException
+	 */
 	@Test(expected = AlreadyReservedException.class)
 	public void TryToReserveAlreadyReservedSeatsTest() throws AlreadyReservedException {
 		
@@ -298,6 +231,14 @@ public class TicketingServiceTest {
 		
 	}
 	
+	/**
+	 *  
+	 * Tests what happens when a user tries to select a seat that he/she has already selected. 
+	 * Should return a DuplicateSelectionException, which would then rollback the request and force 
+	 * the user to select a different seat.
+	 *  
+	 * @throws DuplicateSelectionException
+	 */
 	@Test(expected= DuplicateSelectionException.class)
 	public void DuplicateSelectionTest() throws DuplicateSelectionException {
 		
@@ -321,6 +262,13 @@ public class TicketingServiceTest {
 		
 	}
 	
+	/**
+	 *  
+	 * Tests the ability to delete a seatHold object after three seconds, if the user 
+	 * decides to not reserve the seats he has requested to put on hold.
+	 *  
+	 * @throws InterruptedException
+	 */
 	@Test
 	public void DeleteSeatHoldAfterThreeSecondsTest() throws InterruptedException {
 		
@@ -335,6 +283,14 @@ public class TicketingServiceTest {
 		
 	}
 	
+	/**
+	 *  
+	 * Tests the ability to commit a seatHold object, containing the seats a user has selected
+	 * to reserve. This can occur when a user immediately decides to reserve the seats, or after
+	 * he/she first considered reserving the seats, then putting them on hold. 
+	 *  
+	 * @throws InterruptedException
+	 */
 	@Test
 	public void commitSeatsAfterBeingHeldTest() throws InterruptedException {
 		

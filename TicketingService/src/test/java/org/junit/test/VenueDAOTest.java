@@ -18,6 +18,17 @@ import com.revature.walmart.beans.Venue;
 import com.revature.walmart.config.TicketServiceConfig;
 import com.revature.walmart.dao.VenueDAO;
 
+/**
+ *  
+ *  Tests the VenueDAO interface methods:
+ *  
+ *  com.revature.walmart.dao.VenueDAO.generateSeatingGrid(Venue venue)
+ *  com.revature.walmart.dao.VenueDAO.generateSeatsForVenueByCode(Venue venue)
+ *  com.revature.walmart.dao.VenueDAO.findSeatsByEmail(String customerEmail)
+ *  
+ * @author Haisam Elkewidy
+ *
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes=TicketServiceConfig.class)
 public class VenueDAOTest {

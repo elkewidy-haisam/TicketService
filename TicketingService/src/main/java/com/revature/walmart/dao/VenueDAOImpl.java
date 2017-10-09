@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Repository;
 
 import com.revature.walmart.beans.Seat;

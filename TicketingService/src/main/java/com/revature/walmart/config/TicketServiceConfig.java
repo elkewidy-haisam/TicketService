@@ -2,20 +2,15 @@ package com.revature.walmart.config;
 
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Properties;
-
-import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
-import org.springframework.orm.hibernate3.HibernateTransactionManager;
-import org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean;
+
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.apache.commons.dbcp.BasicDataSource;
+
 
 import com.revature.walmart.beans.*;
 import com.revature.walmart.dao.*;
