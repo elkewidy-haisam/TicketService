@@ -45,12 +45,6 @@ public class SeatDAOImpl implements SeatDAO {
 		
 		
 	}
-
-
-	public void FindSeatsByNumber(Venue venue, int seatNumber) {
-		// TODO Auto-generated method stub
-		
-	}
 	
 
 }

@@ -12,7 +12,7 @@ import com.revature.walmart.beans.Venue;
 @Repository
 public interface VenueDAO {
 	
-	public Map<Seat, SeatStatus> generateSeatingGrid();
+	public void generateSeatingGrid(Venue venue);
 	
 	public Map<Seat, SeatStatus> generateSeatsForVenueByCode(Venue venue);
 	

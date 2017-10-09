@@ -14,17 +14,15 @@ import com.revature.walmart.beans.Venue;
 
 @Repository("venuedaoimpl")
 public class VenueDAOImpl implements VenueDAO{
-
 	
-	Venue venue;
-	
+	SeatDAOImpl seatdaoimpl = new SeatDAOImpl();
 
-	public Map<Seat, SeatStatus> generateSeatingGrid() {
+	public void generateSeatingGrid(Venue venue) {
 		// TODO Auto-generated method stub
 		
 		
 		int rows = venue.getNumSeats()/10;
-		char[] letters = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+		String[] letters = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 		
 		
 		  System.out.println("------------------------------------------------[[  STAGE  ]]--------------------------------------------------");
@@ -35,7 +33,8 @@ public class VenueDAOImpl implements VenueDAO{
 			
 			for (int j = 1; j <= 10; j++) {
 				
-				switch(venue.getSeats().get(letters[i] + "-" + j)) {
+				
+				switch(venue.getSeats().get(seatdaoimpl.FindSeatsByCode(venue, letters[i] + "-" + j))) {
 				
 					case Available:
 						System.out.print("[ " + letters[i] + "-" + j + " (A) ]");
@@ -53,7 +52,7 @@ public class VenueDAOImpl implements VenueDAO{
 		
 			System.out.println();
 		}
-		return null;
+		
 	}
 
 	
