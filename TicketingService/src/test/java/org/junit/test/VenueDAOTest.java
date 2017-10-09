@@ -44,6 +44,8 @@ public class VenueDAOTest {
 	@Test
 	public void generateSeatingGridTest() {
 		
+		System.out.println("Generating a seating chart for the " + venue.getVenueName() + " venue.");
+		
 		venuedaoimpl.generateSeatingGrid(venue);
 		
 		
@@ -51,6 +53,8 @@ public class VenueDAOTest {
 	
 	@Test
 	public void generateSeatsForVenueByCodeTest() {
+		
+		System.out.println("Generating seats for the " + venue.getVenueName() + "venue.");
 		
 		Map<Seat, SeatStatus> venueSeats = venuedaoimpl.generateSeatsForVenueByCode(venue);
 		
@@ -60,6 +64,8 @@ public class VenueDAOTest {
 	
 	@Test
 	public void findSeatsByEmailTest() {
+		
+		System.out.println("Searching for seats by a customer's email.");
 		
 		Set<Seat> seats = venuedaoimpl.findSeatsByEmail();
 		

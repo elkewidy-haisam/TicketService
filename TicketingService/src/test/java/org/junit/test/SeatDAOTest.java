@@ -51,6 +51,8 @@ public class SeatDAOTest {
 	@Test
 	public void updateSeatStatusTest() {
 		
+		System.out.println("Testing if a seat's status can be updated...");
+		
 		Seat seat = new Seat("A-1", SeatStatus.Reserved);
 		
 		seatdaoimpl.UpdateSeatStatus(venue, seat);
@@ -73,6 +75,9 @@ public class SeatDAOTest {
 	public void FindSeatByCodeTest() {
 		
 		String seatCode = "A-1";
+		
+		System.out.println("Trying to find the seat " + seatCode + " in " + venue.getVenueName() + " by code.");
+		
 		Seat seat = seatdaoimpl.FindSeatsByCode(venue, seatCode);
 		
 		assertEquals("A-1", seat.getSeatCode());

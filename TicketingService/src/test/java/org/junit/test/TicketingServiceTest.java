@@ -89,6 +89,7 @@ public class TicketingServiceTest {
 	@Test
 	public void returnNumSeatsAvailableTest() {
 	
+		System.out.println("Trying to return the number of seats available in a venue.");
 		assertEquals(200, ticketserviceimpl.numSeatsAvailable());
 		
 	}
@@ -106,6 +107,8 @@ public class TicketingServiceTest {
 	@Test
 	public void findAndHoldSeatsTest() {
 		
+		System.out.println("Trying to reserve seats that another user had placed on hold.");
+		
 		String[] seatHoldCodes = {"A-1", "A-2", "A-3", "A-4", "A-5"};
 		
 		SeatHold seatHold = ticketserviceimpl.findAndholdSeats(seatHoldCodes.length, "walmart@revature.com");
@@ -115,7 +118,6 @@ public class TicketingServiceTest {
 		assertEquals(100, parthenon.getNumSeats());
 		parthenon.setAvailableSeats(parthenon.getAvailableSeats() - seatHoldCodes.length);
 		assertEquals(90, parthenon.getAvailableSeats());
-		
 		
 	}
 	
@@ -132,6 +134,8 @@ public class TicketingServiceTest {
 	 */
 	@Test
 	public void reserveSeatsTest() {
+		
+		System.out.println("Testing the ability to reserve seats in a venue.");
 		
 		String reservationCode = ticketserviceimpl.reserveSeats(2000, "walmart@revature.com");
 		assertThat(reservationCode, containsString("walm"));
@@ -152,6 +156,8 @@ public class TicketingServiceTest {
 	 */
 	@Test(expected = AlreadyHeldException.class)
 	public void TryToReserveHeldSeatsTest() throws AlreadyHeldException {
+		
+		System.out.println("Testing the ability to reserve seats someone else already placed on hold.");
 		
 		int countOnHold = 0;
 		
@@ -202,6 +208,8 @@ public class TicketingServiceTest {
 	@Test(expected = AlreadyReservedException.class)
 	public void TryToReserveAlreadyReservedSeatsTest() throws AlreadyReservedException {
 		
+		System.out.println("Trying to reserve seats someone else already reserved.");
+		
 		int clashCount = 0;
 		
 		String[] alreadyReservedCodes = {"A-1" , "A-2" , "A-3" , "A-4" , "A-5"};
@@ -242,6 +250,8 @@ public class TicketingServiceTest {
 	@Test(expected= DuplicateSelectionException.class)
 	public void DuplicateSelectionTest() throws DuplicateSelectionException {
 		
+		System.out.println("Trying to select a seat that was already selected.");
+		
 		String[] reservedCodes = {"A-1", "A-2", "A-3", "A-4", "A-5"};
 		String[] conflictCodes = {"A-1", "A-3", "A-4", "A-5", "A-6"};
 		
@@ -272,6 +282,8 @@ public class TicketingServiceTest {
 	@Test
 	public void DeleteSeatHoldAfterThreeSecondsTest() throws InterruptedException {
 		
+		System.out.println("Testing the ability to delete a seatHold after three seconds.");
+		
 		SeatHold seatHold = new SeatHold(6, "revature@walmart.com");
 		boolean holdDecision = false;
 		
@@ -295,6 +307,9 @@ public class TicketingServiceTest {
 	public void commitSeatsAfterBeingHeldTest() throws InterruptedException {
 		
 		SeatHold seatHold = new SeatHold(6, "revature@walmart.com");
+		
+		System.out.println("Testing the ability to commit a reservation for " + seatHold.getNumSeats() + " seats.");
+		
 		boolean holdDecision = true;
 		
 		Thread.sleep(4000);
